@@ -12,7 +12,8 @@ const getUsers = (req, res) => {
     if(error) {
       throw error;
     }
-    res.status(200).json(results.rows);
+    console.log(results.rows);
+    // res.status(200).json(results.rows);
   });
 }
 
@@ -50,9 +51,24 @@ const updateUser = (req, res) => {
   );
 }
 
+const deleteUser = (req, res) => {
+  const id = parseInt(req.params.id);
+  pool.query(
+    'DELETE FROM users WHERE id = $1',
+    [id],
+    (err, results) => {
+      if(err) {
+        throw err;
+      }
+      res.status(200).send(`User has been deleted with ID: ${id}`);
+    }
+  );
+}
+
 module.exports = {
   getUsers,
   getUserById,
   createUser,
-  updateUser
+  updateUser,
+  deleteUser
 }
